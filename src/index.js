@@ -35,38 +35,46 @@ function Menu({ cards, firstSelected, secondSelected, head, setCards, setFirstSe
     const [input, setInput] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    function errorHandle(m){
+    function errorHandle(m) {
+        debugger;
         let c = cards.slice();
         let node = c[c.indexOf(head)];
-        while(node !== null){
+        while (node !== null) {
             node.item = "";
             node.full = false;
             let n = node.next;
             node.next = null;
             node = n;
-            
+
         }
         setFirstSelected(null);
-        setFirstSelected(null);
+        setSecondSelected(null);
         setCards(c);
         setHead(null);
         setErrorMessage(m);
         setInput("");
-        setTimeout(() => {setErrorMessage("")}, 10000)
+        setTimeout(() => { setErrorMessage("") }, 10000)
     }
 
     function captchalogue() {
         if (input === "") return;
         let index = null;
+
+
         for (let i = 0; i < 8; i++) {
             let node = cards[i];
+            let cond = cards.reduce((total, current) => {
+                let a = current.next === node;
+                return total || a;
+            }, false);
+            if (cond) continue;
             if (node.item === "" && node.next === null && node.full === false) {
                 index = i;
                 break;
             }
         }
 
-        if(index === null){
+        if (index === null) {
             errorHandle("No spare cards left, ejected");
             return;
         }
@@ -83,6 +91,10 @@ function Menu({ cards, firstSelected, secondSelected, head, setCards, setFirstSe
 
         let node = head;
         while (node.next !== null) {
+            if (node.item === "" && node.next === null && node.full === false) {
+                errorHandle("Encountered an empty card in the head sequence. All ejected, inluding exotic matter");
+                return;
+            }
             node = node.next;
         }
         let c = cards.slice();
@@ -93,12 +105,16 @@ function Menu({ cards, firstSelected, secondSelected, head, setCards, setFirstSe
         setInput("");
     }
 
-    function selectFirst(){
-        if(input === "" || head === null) return;
+    function selectFirst() {
+        if (input === "" || head === null) return;
         let node = head;
-        while(node !== null){
-            if(node.item === input){
-                if(node === secondSelected){
+        while (node !== null) {
+            if (node.item === input) {
+                if (node.item === "" && node.next === null && node.full === false) {
+                    errorHandle("Encountered an empty card in the head sequence. All ejected, inluding exotic matter");
+                    return;
+                }
+                if (node === secondSelected) {
                     errorHandle("Both selected cards are the same, ejected");
                 }
                 setFirstSelected(node);
@@ -111,12 +127,16 @@ function Menu({ cards, firstSelected, secondSelected, head, setCards, setFirstSe
 
     }
 
-    function selectSecond(){
-        if(input === "" || head === null) return;
+    function selectSecond() {
+        if (input === "" || head === null) return;
         let node = head;
-        while(node !== null){
-            if(node.item === input){
-                if(node === firstSelected){
+        while (node !== null) {
+            if (node.item === input) {
+                if (node.item === "" && node.next === null && node.full === false) {
+                    errorHandle("Encountered an empty card in the head sequence. All ejected, inluding exotic matter");
+                    return;
+                }
+                if (node === firstSelected) {
                     errorHandle("Both selected cards are the same, ejected");
                 }
                 setSecondSelected(node);
@@ -126,18 +146,95 @@ function Menu({ cards, firstSelected, secondSelected, head, setCards, setFirstSe
             node = node.next;
         }
         errorHandle("Card not found, ejected");
-
     }
+
+    function nullHead() {
+        setHead(null);
+    }
+
+    function decaptchalogue(node) {
+        let c = cards.slice();
+        let n = c[c.indexOf(node)];
+        n.item = "";
+        n.full = false;
+        n.next = null;
+        setCards(c);
+        if (node === firstSelected) {
+            setFirstSelected(null);
+        }
+        else if (node === secondSelected) {
+            setSecondSelected(null);
+        }
+    }
+
+    function nullNext(node) {
+        let c = cards.slice();
+        let n = c[c.indexOf(node)];
+        n.next = null;
+        setCards(c);
+        if (node === firstSelected) {
+            setFirstSelected(null);
+        }
+        else if (node === secondSelected) {
+            setSecondSelected(null);
+        }
+    }
+
+    function connect() {
+        let cond = false;
+        let c = cards.slice();
+        let n1 = c[c.indexOf(firstSelected)];
+        let n2 = c[c.indexOf(secondSelected)];
+        let n = n2;
+        while(n !== null){
+            if (n.item === "" && n.next === null && n.full === false) {
+                errorHandle("Encountered an empty card. All ejected, inluding exotic matter");
+                return;
+            }
+            if(n === n1){
+                errorHandle("A cycle is created, ejected");
+                return;
+            }
+            n = n.next;
+        }
+        n1.next = n2;
+        setCards(c);
+        setFirstSelected(null);
+        setSecondSelected(null);
+    }
+
+    let actionone = firstSelected === null ? (<div id="actionone">Select first card to unlock</div>) :
+        (<div id="actionone">
+            <p>Actions on the <span style={{ color: "aqua" }}>first selected</span> card</p>
+            <button id="decapone" type="button" onClick={() => { decaptchalogue(firstSelected) }}>DeC</button>
+            <button id="nullone" type="button" onClick={() => { nullNext(firstSelected) }}>NC</button>
+        </div>);
+
+    let actiontwo = secondSelected === null ? (<div id="actiontwo">Select second card to unlock</div>) :
+        (<div id="actiontwo">
+            <p>Actions on the <span style={{ color: "orange" }}>second selected</span> card</p>
+            <button id="decaptwo" type="button" onClick={() => { decaptchalogue(secondSelected) }}>DeC</button>
+            <button id="nulltwo" type="button" onClick={() => { nullNext(secondSelected) }}>NC</button>
+        </div>);
+
+    let teamaction = secondSelected === null || firstSelected === null ? (<div id="teamaction">Select both first and second card to unlock</div>) :
+        (<div id="actiontwo">
+            <p>Actions on both selected cards</p>
+            <button id="connect" type="button" onClick={connect}>1{">"}2</button>
+        </div>);
 
     return (
         <div id="menu">
-            <p id="error" style={{color: "red", font: "bold 16px 'Courier New', sans-serif"}}> {errorMessage} </p>
+            <p id="error" style={{ color: "red", font: "bold 16px 'Courier New', sans-serif" }}> {errorMessage} </p>
             <div id="selection">
-                <input id="inputselection" type="text" value={input} maxLength="15" placeholder="max 15 characters" onInput={e => setInput(e.target.value)}></input>
+                <p>Select and captchalogue</p>
+                <input id="inputselection" type="text" value={input} maxLength="10" placeholder="max 10 characters" onInput={e => setInput(e.target.value)}></input>
                 <button id="captchaloguebutton" type="button" onClick={captchalogue}>C</button>
                 <button id="selectone" type="button" onClick={selectFirst}>S1</button>
                 <button id="selecttwo" type="button" onClick={selectSecond}>S2</button>
+                {head === null ? ("") : (<button id="nullhead" type="button" onClick={nullHead}>NH</button>)}
             </div>
+            {actionone}{actiontwo}{teamaction}
         </div>
     );
 }
@@ -148,7 +245,6 @@ function Display({ cards, firstSelected, secondSelected, head }) {
         array.push(new Array());
     }
     let pointer = head === null ? null : head.next;
-    console.log(head);
     let proc = [-1, -1, -1, -1, -1, -1, -1, -1]
     if (head !== null) {
         array[0].push(head);
@@ -172,8 +268,8 @@ function Display({ cards, firstSelected, secondSelected, head }) {
 
         let node = cards[pointer];
         if (node.full === false) {
-            pointer++;
             proc[pointer] = 8;
+            pointer++;
             continue;
         }
         while (node != null) {
@@ -191,29 +287,29 @@ function Display({ cards, firstSelected, secondSelected, head }) {
         }
         return item.map((itemLower, indexLower) => {
             let bg;
-            if(index === 0 && itemLower !== firstSelected && itemLower !== secondSelected){
+            if (index === 0 && itemLower !== firstSelected && itemLower !== secondSelected) {
                 bg = "normalcard";
             }
-            if(index === 0 && itemLower === firstSelected){
+            if (index === 0 && itemLower === firstSelected) {
                 bg = "normalcardone";
             }
-            if(index === 0 && itemLower === secondSelected){
+            if (index === 0 && itemLower === secondSelected) {
                 bg = "normalcardtwo";
             }
-            if(index !== 0 && itemLower !== firstSelected && itemLower !== secondSelected){
+            if (index !== 0 && itemLower !== firstSelected && itemLower !== secondSelected) {
                 bg = "inactivecard";
             }
-            if(index !== 0 && itemLower === firstSelected){
+            if (index !== 0 && itemLower === firstSelected) {
                 bg = "inactivecardone";
             }
-            if(index !== 0 && itemLower === secondSelected){
+            if (index !== 0 && itemLower === secondSelected) {
                 bg = "inactivecardtwo";
             }
-            let arrow = "";
-            if(index === 0 || indexLower > 0){
-                arrow = <div className="arrow" style={{ gridColumn: `${(indexLower+1) * 2 - 1} / span 1`, gridRow: `${(index + 1)} / span 1` }}></div>
+            let arrow;
+            if (index === 0 || indexLower > 0) {
+                arrow = <div className="arrow"></div>
             }
-            return (<>{arrow} <div key={`${index} ${indexLower}`} className={`displaycard ${bg}`} style={{ gridColumn: `${(indexLower + 1) * 2} / span 1`, gridRow: `${(index + 1)} / span 1` }}>{itemLower.item}</div></>)
+            return (<div className="cardcontainer" key={`${index} ${indexLower}`} style={{ gridArea: `${index + 1} / ${indexLower + 1} / span 1 / span 1` }}>{arrow} <div className={`displaycard ${bg}`} >{itemLower.item}</div></div>)
         })
     })
 
