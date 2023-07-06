@@ -33,7 +33,6 @@
     box-sizing: border-box;
     width: 20px;
     height: calc(118px * 0.65);
-    background-image: url("arrow.png");
     background-repeat: no-repeat;
     background-size: 100%;
     background-position: center;
@@ -67,29 +66,6 @@
     align-items: center;
 }
 
-.normalcard{
-    background-image: url("linkedlist.png");
-}
-
-.normalcardone{
-    background-image: url("linkedlistselectedone.png");
-}
-
-.normalcardtwo{
-    background-image: url("linkedlistselectetwo.png");
-}
-
-.inactivecard{
-    background-image: url("linkedlistinactive.png");
-}
-
-.inactivecardone{
-    background-image: url("linkedlistinactiveone.png");
-}
-
-.inactivecardtwo{
-    background-image: url("linkedlistinactivetwo.png");
-}
 
 #menu {
     box-sizing: border-box;
@@ -162,7 +138,6 @@ button {
     height: calc(93px * 0.8);
     min-width: calc(68px * 0.8);
     min-height: calc(93px * 0.8);
-    background-image: url("linkedlistsimple.png");
     background-repeat: no-repeat;
     background-size: 100%;
     background-position: center;

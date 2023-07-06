@@ -288,28 +288,28 @@ function Display({ cards, firstSelected, secondSelected, head }) {
         return item.map((itemLower, indexLower) => {
             let bg;
             if (index === 0 && itemLower !== firstSelected && itemLower !== secondSelected) {
-                bg = "normalcard";
+                bg = "/linkedlist.png";
             }
             if (index === 0 && itemLower === firstSelected) {
-                bg = "normalcardone";
+                bg = "/linkedlistselectedone.png";
             }
             if (index === 0 && itemLower === secondSelected) {
-                bg = "normalcardtwo";
+                bg = "/linkedlistselectetwo.png";
             }
             if (index !== 0 && itemLower !== firstSelected && itemLower !== secondSelected) {
-                bg = "inactivecard";
+                bg = "/linkedlistinactive.png";
             }
             if (index !== 0 && itemLower === firstSelected) {
-                bg = "inactivecardone";
+                bg = "/linkedlistinactiveone.png";
             }
             if (index !== 0 && itemLower === secondSelected) {
-                bg = "inactivecardtwo";
+                bg = "/linkedlistinactivetwo.png";
             }
             let arrow;
             if (index === 0 || indexLower > 0) {
-                arrow = <div className="arrow"></div>
+                arrow = <div className="arrow" style={{backgroundImage: "url(/arrow.png)"}}></div>
             }
-            return (<div className="cardcontainer" key={`${index} ${indexLower}`} style={{ gridArea: `${index + 1} / ${indexLower + 1} / span 1 / span 1` }}>{arrow} <div className={`displaycard ${bg}`} >{itemLower.item}</div></div>)
+            return (<div className="cardcontainer" key={`${index} ${indexLower}`} style={{ gridArea: `${index + 1} / ${indexLower + 1} / span 1 / span 1` }}>{arrow} <div className={`displaycard`} style={{backgroundImage: `url(${bg})`}}>{itemLower.item}</div></div>)
         })
     })
 
@@ -320,7 +320,7 @@ function Display({ cards, firstSelected, secondSelected, head }) {
 
 function Simple({ cards }) {
     let array = cards.map(function (x, i) {
-        return (<div key={i} className="simplecard">{x.item}</div>)
+        return (<div key={i} className="simplecard" style={{backgroundImage: "url(/linkedlistsimple.png)"}}>{x.item}</div>)
     });
     return (
         <div id="simple">{array}</div>
