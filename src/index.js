@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
 
@@ -328,6 +328,19 @@ function Menu({ cards, firstSelected, secondSelected, head, setCards, setFirstSe
 }
 
 function Display({ cards, firstSelected, secondSelected, head }) {
+
+    useEffect(()=>{
+        let imageArray = ["./linkedlist.png", "./arrow.png", "./linkedlistselectedone.png", "./linkedlistselectetwo.png", 
+            "./linkedlistinactive.png", "./linkedlistinactiveone.png", "./linkedlistinactivetwo.png", "./duplicate.png"];
+        async function loadImage(img){
+            let image = new Image();
+            image.src = img;
+            return image;
+        }
+
+        Promise.all(imageArray.map((item) => loadImage(item)));
+    }, []);
+
     let array = [];
     for (let i = 0; i < 8; i++) {
         array.push(new Array());
