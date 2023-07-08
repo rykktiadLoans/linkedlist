@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
 
+
 function Card(item, next, full) {
     this.item = item;
     this.next = next;
@@ -51,11 +52,11 @@ function Main() {
                 </p>
 
                 <h3>How does the program work?</h3>
-                <p>The stripe at the bottom shows all 8 cards that are available to you and what they store. The menu at the right is the only interactive part of the app that allows you to do operations. We’ll talk about it later.</p>
+                <p>The stripe at the bottom shows all 8 cards that are available to you and what they store. The menu at the right is the only interactive part of the app that allows you to do operations. We'll talk about it later.</p>
                 <p>The big dark gray area in the center is the display where all the cards are shown. Every row is a separate list. The top row is the main chain that is accessed by Head. You may notice that it is the only row that begins with a red arrow. Arrows visualize pointers, by the way. They also show when a card points to another card. Cards in the top row are blue, because they are the only active ones (can be accessed from head). All the others are gray. Card selected in the first slot has a blue outline, the one in the second has an orange outline. Sometimes, you can make multiple cards point to the same card. In that case, the display may render the same card multiple times. These cards are called duplicates, which have red color, but in reality they are the exact same cards, just accessed from a different card. The originals are always the ones at the top.</p>
                 <p>Ok, now onto the operation menu. It is important to note that, under some conditions, there may be an error. In that case, all the cards *that can be accessed from Head* are ejected and all the selected are emptied.</p>
-                <p>I’ll also write some procedures at the end on how to easily operate that thing.</p>
-                <p>Before we go on further, I need to explain what empty cards are. When a card is decaptchalogued, its contents are emptied, pointer is nullified and the card’s space can be used for further uses. However, the card before it or Head can still point to it. That means that the card is still pointing at something, but that something just isn’t there, and when the program goes to it it (shouldn’t) does not know how to respond and crashes. This is not an engine render, but rather an emulation of the way linked lists in C work. And when an empty card appears, the display will show you a card without text in it. They are largely undesirable and will lead to the program throwing out an error. If that happens, when the empty card is ejected, the item ejected is called exotic matter, which corresponds to a random captcha code. When captchalogued again, the code on the back of the card is usually unreadable. That may be beneficial sometimes, but usually not.
+                <p>I'll also write some procedures at the end on how to easily operate that thing.</p>
+                <p>Before we go on further, I need to explain what empty cards are. When a card is decaptchalogued, its contents are emptied, pointer is nullified and the card's space can be used for further uses. However, the card before it or Head can still point to it. That means that the card is still pointing at something, but that something just isn't there, and when the program goes to it it (shouldn't) does not know how to respond and crashes. This is not an engine render, but rather an emulation of the way linked lists in C work. And when an empty card appears, the display will show you a card without text in it. They are largely undesirable and will lead to the program throwing out an error. If that happens, when the empty card is ejected, the item ejected is called exotic matter, which corresponds to a random captcha code. When captchalogued again, the code on the back of the card is usually unreadable. That may be beneficial sometimes, but usually not.
 
                 </p>
                 <p>The main tool you can use to manipulate the list are selected cards, they give you access to the selected card as long as it is selected, no matter where it is.</p>
@@ -65,24 +66,24 @@ function Main() {
                     <li>
                         Select and captchalogue. Contains an input that needs to be filled in order for the operations in this section to function.
                         <ol>
-                            <li>C: Captchalogue. Takes the value from the input and appends the card with the value to the end of the active chain. Takes up one card (don’t forget, you can only use 8 cards). If there is an empty card in the active chain or all 8 cards are already used up, it crashes.</li>
+                            <li>C: Captchalogue. Takes the value from the input and appends the card with the value to the end of the active chain. Takes up one card (don't forget, you can only use 8 cards). If there is an empty card in the active chain or all 8 cards are already used up, it crashes.</li>
                             <li>S1: Select first. Takes the value from the input, looks for the card with the corresponding value in the main chain, and puts it as the first selected card. Crashes if encounters an empty card in the main chain, fails to find the card, or if both the selected cards are the same one.</li>
                             <li>S2: Select second. Same as the above, but for the second one.</li>
-                            <li>NH: Null head. Points the head to null. Unlocked only when Head isn’t already pointing to null</li>
+                            <li>NH: Null head. Points the head to null. Unlocked only when Head isn't already pointing to null</li>
                         </ol>
                     </li>
                     <li>
                         Actions on the first/second selected card. The operations are the same for both, but for their respective cards. Require the card to be selected in the appropriate slot to unlock.
                         <ol>
                             <li>DeC: Decaptchalogue. Empties the card, nulls the next,  and ejects the item of the selected card. Deselects the card.</li>
-                            <li>NN: Null next. Changes the card’s pointer so that it points to null.</li>
+                            <li>NN: Null next. Changes the card's pointer so that it points to null.</li>
                             <li>SH: Set head. Sets the card as the new head. The easiest way to create duplicates.</li>
                         </ol>
                     </li>
                     <li>
-                        Select both. The operation that requires both cards to be selected. There’s only one
+                        Select both. The operation that requires both cards to be selected. There's only one
                         <ol>
-                            <li>1{">"}2: 1 to 2. Changes the pointer of the first selected card so it points to the second selected card. Deselects both cards. Before connecting, the program makes sure that the connection will not result in a cycle by checking whether you can access the first selected card by using the second’s chain. If it does find it, it crashes since the connection results in a cycle. If it encounters an empty card, it also crashes.</li>
+                            <li>1{">"}2: 1 to 2. Changes the pointer of the first selected card so it points to the second selected card. Deselects both cards. Before connecting, the program makes sure that the connection will not result in a cycle by checking whether you can access the first selected card by using the second's chain. If it does find it, it crashes since the connection results in a cycle. If it encounters an empty card, it also crashes.</li>
                         </ol>
                     </li>
                 </ul>
@@ -388,29 +389,29 @@ function Display({ cards, firstSelected, secondSelected, head }) {
                 return false;
             }
             if (index === 0 && itemLower !== firstSelected && itemLower !== secondSelected) {
-                bg = "/linkedlist.png";
+                bg = "./linkedlist/linkedlist.png";
             }
             else if (duplicate()) {
-                bg = "/duplicate.png";
+                bg = "./linkedlist/duplicate.png";
             }
             else if (index === 0 && itemLower === firstSelected) {
-                bg = "/linkedlistselectedone.png";
+                bg = "./linkedlist/linkedlistselectedone.png";
             }
             else if (index === 0 && itemLower === secondSelected) {
-                bg = "/linkedlistselectetwo.png";
+                bg = "./linkedlist/linkedlistselectetwo.png";
             }
             else if (index !== 0 && itemLower !== firstSelected && itemLower !== secondSelected) {
-                bg = "/linkedlistinactive.png";
+                bg = "./linkedlist/linkedlistinactive.png";
             }
             else if (index !== 0 && itemLower === firstSelected) {
-                bg = "/linkedlistinactiveone.png";
+                bg = "./linkedlist/linkedlistinactiveone.png";
             }
             else if (index !== 0 && itemLower === secondSelected) {
-                bg = "/linkedlistinactivetwo.png";
+                bg = "./linkedlist/linkedlistinactivetwo.png";
             }
             let arrow;
             if (index === 0 || indexLower > 0) {
-                arrow = <div className="arrow" style={{ backgroundImage: "url(/arrow.png)" }}></div>
+                arrow = <div className="arrow" style={{ backgroundImage: "url(./linkedlist/arrow.png)" }}></div>
             }
             return (<div className="cardcontainer" key={`${index} ${indexLower}`} style={{ gridArea: `${index + 1} / ${indexLower + 1} / span 1 / span 1` }}>{arrow} <div className={`displaycard`} style={{ backgroundImage: `url(${bg})` }}>{itemLower.item}</div></div>)
         })
@@ -423,7 +424,7 @@ function Display({ cards, firstSelected, secondSelected, head }) {
 
 function Simple({ cards }) {
     let array = cards.map(function (x, i) {
-        return (<div key={i} className="simplecard" style={{ backgroundImage: "url(/linkedlistsimple.png)" }}>{x.item}</div>)
+        return (<div key={i} className="simplecard" style={{ backgroundImage: "url(./linkedlist/linkedlistsimple.png)" }}>{x.item}</div>)
     });
     return (
         <div id="simple">{array}</div>
