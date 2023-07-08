@@ -389,29 +389,29 @@ function Display({ cards, firstSelected, secondSelected, head }) {
                 return false;
             }
             if (index === 0 && itemLower !== firstSelected && itemLower !== secondSelected) {
-                bg = "./linkedlist/linkedlist.png";
+                bg = "./linkedlist.png";
             }
             else if (duplicate()) {
-                bg = "./linkedlist/duplicate.png";
+                bg = "./duplicate.png";
             }
             else if (index === 0 && itemLower === firstSelected) {
-                bg = "./linkedlist/linkedlistselectedone.png";
+                bg = "./linkedlistselectedone.png";
             }
             else if (index === 0 && itemLower === secondSelected) {
-                bg = "./linkedlist/linkedlistselectetwo.png";
+                bg = "./linkedlistselectetwo.png";
             }
             else if (index !== 0 && itemLower !== firstSelected && itemLower !== secondSelected) {
-                bg = "./linkedlist/linkedlistinactive.png";
+                bg = "./linkedlistinactive.png";
             }
             else if (index !== 0 && itemLower === firstSelected) {
-                bg = "./linkedlist/linkedlistinactiveone.png";
+                bg = "./linkedlistinactiveone.png";
             }
             else if (index !== 0 && itemLower === secondSelected) {
-                bg = "./linkedlist/linkedlistinactivetwo.png";
+                bg = "./linkedlistinactivetwo.png";
             }
             let arrow;
             if (index === 0 || indexLower > 0) {
-                arrow = <div className="arrow" style={{ backgroundImage: "url(./linkedlist/arrow.png)" }}></div>
+                arrow = <div className="arrow" style={{ backgroundImage: "url(./arrow.png)" }}></div>
             }
             return (<div className="cardcontainer" key={`${index} ${indexLower}`} style={{ gridArea: `${index + 1} / ${indexLower + 1} / span 1 / span 1` }}>{arrow} <div className={`displaycard`} style={{ backgroundImage: `url(${bg})` }}>{itemLower.item}</div></div>)
         })
@@ -424,7 +424,7 @@ function Display({ cards, firstSelected, secondSelected, head }) {
 
 function Simple({ cards }) {
     let array = cards.map(function (x, i) {
-        return (<div key={i} className="simplecard" style={{ backgroundImage: "url(./linkedlist/linkedlistsimple.png)" }}>{x.item}</div>)
+        return (<div key={i} className="simplecard" style={{ backgroundImage: "url(./linkedlistsimple.png)" }}>{x.item}</div>)
     });
     return (
         <div id="simple">{array}</div>
